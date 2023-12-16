@@ -674,10 +674,6 @@ public abstract class AbstractRestApiRequestHandler implements RequestStreamHand
       final AwsServiceCache awsServices) {
     ApiAuthorizationInterceptor interceptor =
         awsServices.getExtensionOrNull(ApiAuthorizationInterceptor.class);
-
-    if (interceptor != null) {
-      interceptor.awsServiceCache(awsServices);
-    }
     return interceptor;
   }
 
