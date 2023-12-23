@@ -326,7 +326,7 @@
           /configuration/opa:
             get:
               operationId: GetOpaConfiguration
-              description: Returns OPA Configuration
+              description: Returns OPA Configuration, can only be requested with ADMIN privileges
               summary: Get OPA Configuration
               tags:
               - System Management
@@ -355,12 +355,10 @@
                 $ref: '#/components/x-amazon-apigateway-integrations/lambdaApi200'
             put:
               operationId: SetOpaConfiguration
-              description: Set OPA Configuration
+              description: Set OPA Configuration, can only be requested with ADMIN privileges
               summary: Set OPA Configuration
               tags:
               - System Management
-              parameters:
-              - $ref: '#/components/parameters/siteIdParam'
               requestBody:
                 required: true
                 content:
@@ -5540,6 +5538,9 @@
                 policy:
                   type: string
                   description: OPA Policy in YAML format
+                siteId:
+                  type: string
+                  description: Site Id to apply policy to, leave empty for global policy
             SetOpaConfigurationResponse:
               type: object
               properties:
