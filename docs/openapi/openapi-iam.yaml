@@ -365,10 +365,6 @@
                   application/json:
                     schema:
                       $ref: '#/components/schemas/SetOpaConfigurationRequest'
-                    examples:
-                      AddApiKey:
-                        value:
-                          name: My API Key
               responses:
                 "200":
                   description: 200 OK
