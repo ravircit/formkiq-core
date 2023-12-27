@@ -45,8 +45,8 @@ public class ApiAuthorizationBuilder {
   /** The suffix for the 'readonly' Cognito group. */
   public static final String COGNITO_READ_SUFFIX = "_read";
 
-  /** {@link List} {@link ApiAuthorizationInterceptor}. */
-  private ApiAuthorizationInterceptor interceptor = null;
+  /** {@link List} {@link ApiAuthorizationInterceptors}. */
+  private ApiAuthorizationInterceptors interceptors = null;
 
   /**
    * constructor.
@@ -110,8 +110,10 @@ public class ApiAuthorizationBuilder {
 
     addPermissions(event, authorization, groups, admin);
 
-    if (this.interceptor != null) {
-      this.interceptor.update(event, authorization);
+    if (this.interceptors != null) {
+      for (ApiAuthorizationInterceptor i : this.interceptors.getInterceptors()) {
+        i.update(event, authorization);
+      }
     }
 
     return authorization;
@@ -276,12 +278,12 @@ public class ApiAuthorizationBuilder {
   /**
    * Set {@link ApiAuthorizationInterceptor}.
    * 
-   * @param apiAuthorizationInterceptor {@link ApiAuthorizationInterceptor}
+   * @param apiAuthorizationInterceptors {@link ApiAuthorizationInterceptor}
    * @return {@link ApiAuthorizationBuilder}
    */
   public ApiAuthorizationBuilder interceptors(
-      final ApiAuthorizationInterceptor apiAuthorizationInterceptor) {
-    this.interceptor = apiAuthorizationInterceptor;
+      final ApiAuthorizationInterceptors apiAuthorizationInterceptors) {
+    this.interceptors = apiAuthorizationInterceptors;
     return this;
   }
 

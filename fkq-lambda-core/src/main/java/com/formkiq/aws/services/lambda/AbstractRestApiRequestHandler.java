@@ -541,7 +541,7 @@ public abstract class AbstractRestApiRequestHandler implements RequestStreamHand
 
     try {
 
-      ApiAuthorizationInterceptor interceptor = setupApiAuthorizationInterceptor(awsServices);
+      ApiAuthorizationInterceptors interceptor = setupApiAuthorizationInterceptor(awsServices);
 
       ApiAuthorization authorization =
           new ApiAuthorizationBuilder().interceptors(interceptor).build(event);
@@ -670,10 +670,10 @@ public abstract class AbstractRestApiRequestHandler implements RequestStreamHand
     }
   }
 
-  private ApiAuthorizationInterceptor setupApiAuthorizationInterceptor(
+  private ApiAuthorizationInterceptors setupApiAuthorizationInterceptor(
       final AwsServiceCache awsServices) {
-    ApiAuthorizationInterceptor interceptor =
-        awsServices.getExtensionOrNull(ApiAuthorizationInterceptor.class);
+    ApiAuthorizationInterceptors interceptor =
+        awsServices.getExtensionOrNull(ApiAuthorizationInterceptors.class);
     return interceptor;
   }
 
