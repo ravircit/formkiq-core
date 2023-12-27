@@ -44,6 +44,7 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -541,7 +542,7 @@ public abstract class AbstractRestApiRequestHandler implements RequestStreamHand
 
     try {
 
-      ApiAuthorizationInterceptors interceptor = setupApiAuthorizationInterceptor(awsServices);
+      List<ApiAuthorizationInterceptor> interceptor = setupApiAuthorizationInterceptor(awsServices);
 
       ApiAuthorization authorization =
           new ApiAuthorizationBuilder().interceptors(interceptor).build(event);
@@ -670,11 +671,9 @@ public abstract class AbstractRestApiRequestHandler implements RequestStreamHand
     }
   }
 
-  private ApiAuthorizationInterceptors setupApiAuthorizationInterceptor(
+  private List<ApiAuthorizationInterceptor> setupApiAuthorizationInterceptor(
       final AwsServiceCache awsServices) {
-    ApiAuthorizationInterceptors interceptor =
-        awsServices.getExtensionOrNull(ApiAuthorizationInterceptors.class);
-    return interceptor;
+    return awsServices.getExtensions(ApiAuthorizationInterceptor.class);
   }
 
   private String toStringFromMap(final Map<String, String> map) {
