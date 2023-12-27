@@ -350,7 +350,7 @@ public class ApiDocumentsTagsRequestTest extends AbstractRequestHandler {
   @Test
   public void testHandleDeleteTagDocument04() throws Exception {
     getAwsServices().register(DocumentTagSchemaPlugin.class,
-        new DocumentTagSchemaPluginExtension(new DocumentTagSchemaReturnErrors()));
+        new DocumentTagSchemaPluginExtension(new DocumentTagSchemaReturnErrors()), true);
 
     for (String siteId : Arrays.asList(null, UUID.randomUUID().toString())) {
       // given
@@ -1324,7 +1324,7 @@ public class ApiDocumentsTagsRequestTest extends AbstractRequestHandler {
   @Test
   public void testHandlePostDocumentTags10() throws Exception {
     getAwsServices().register(DocumentTagSchemaPlugin.class,
-        new DocumentTagSchemaPluginExtension(new DocumentTagSchemaReturnErrors()));
+        new DocumentTagSchemaPluginExtension(new DocumentTagSchemaReturnErrors()), true);
 
     for (String siteId : Arrays.asList(null, UUID.randomUUID().toString())) {
       // given

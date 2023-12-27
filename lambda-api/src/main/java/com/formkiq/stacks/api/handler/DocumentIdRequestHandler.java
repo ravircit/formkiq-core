@@ -130,7 +130,7 @@ public class DocumentIdRequestHandler
       final AwsServiceCache awsservice, final ApiAuthorization authorization, final String siteId,
       final String documentId, final DynamicObject item, final List<DynamicObject> documents) {
 
-    String userId = authorization.username();
+    String userId = authorization.getUsername();
 
     item.put("documentId", documentId);
     item.put("userId", userId);
@@ -189,7 +189,7 @@ public class DocumentIdRequestHandler
 
     String documentBucket = awsservice.environment("DOCUMENTS_S3_BUCKET");
 
-    String siteId = authorization.siteId();
+    String siteId = authorization.getSiteId();
     String documentId = event.getPathParameters().get("documentId");
 
     if (awsservice.debug()) {
@@ -292,7 +292,7 @@ public class DocumentIdRequestHandler
       final ApiGatewayRequestEvent event, final ApiAuthorization authorization,
       final AwsServiceCache awsservice) throws Exception {
 
-    String siteId = authorization.siteId();
+    String siteId = authorization.getSiteId();
     int limit = getLimit(logger, event);
 
     CacheService cacheService = awsservice.getExtension(CacheService.class);
@@ -337,7 +337,7 @@ public class DocumentIdRequestHandler
     boolean isUpdate = event.getHttpMethod().equalsIgnoreCase("patch")
         && event.getPathParameters().containsKey("documentId");
 
-    String siteId = authorization.siteId();
+    String siteId = authorization.getSiteId();
     String documentId = UUID.randomUUID().toString();
 
     DynamicDocumentItem item = new DynamicDocumentItem(fromBodyToMap(event));
@@ -446,7 +446,7 @@ public class DocumentIdRequestHandler
     List<DynamicObject> objs = item.getList("actions");
     if (!objs.isEmpty()) {
 
-      objs.stream().forEach(a -> a.put("userId", authorization.username()));
+      objs.stream().forEach(a -> a.put("userId", authorization.getUsername()));
       item.put("actions", objs);
 
       ConfigService configsService = awsservice.getExtension(ConfigService.class);

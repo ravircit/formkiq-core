@@ -256,9 +256,22 @@ public class AwsServiceCache {
    * @param extension {@link AwsServiceExtension}
    */
   public <T> void register(final Class<T> clazz, final AwsServiceExtension<T> extension) {
+    register(clazz, extension, false);
+  }
+
+  /**
+   * Registers an {@link AwsServiceExtension}.
+   * 
+   * @param clazz {@link Class}
+   * @param <T> Type of Class
+   * @param extension {@link AwsServiceExtension}
+   * @param overwrite boolean
+   */
+  public <T> void register(final Class<T> clazz, final AwsServiceExtension<T> extension,
+      final boolean overwrite) {
 
     List<AwsServiceExtension<?>> list = null;
-    if (this.extensions.containsKey(clazz)) {
+    if (this.extensions.containsKey(clazz) && !overwrite) {
       list = this.extensions.get(clazz);
     } else {
       list = new ArrayList<>();

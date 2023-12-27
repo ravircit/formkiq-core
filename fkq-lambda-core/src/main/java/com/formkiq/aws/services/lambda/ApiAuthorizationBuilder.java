@@ -105,8 +105,10 @@ public class ApiAuthorizationBuilder {
 
     String defaultSiteId = getDefaultSiteId(event, groups, admin);
 
+    Collection<String> roles = getRoles(event);
+
     ApiAuthorization authorization =
-        new ApiAuthorization().siteId(defaultSiteId).username(getUsername(event));
+        new ApiAuthorization().siteId(defaultSiteId).username(getUsername(event)).roles(roles);
 
     addPermissions(event, authorization, groups, admin);
 
@@ -205,6 +207,28 @@ public class ApiAuthorizationBuilder {
    */
   private String getQueryStringParameter(final ApiGatewayRequestEvent event, final String key) {
     return event != null ? notNull(event.getQueryStringParameters()).get("siteId") : null;
+  }
+
+  /**
+   * Get {@link ApiGatewayRequestEvent} roles.
+   * 
+   * @param event {@link ApiGatewayRequestEvent}
+   * @return {@link Collection} {@link String}
+   */
+  private Collection<String> getRoles(final ApiGatewayRequestEvent event) {
+    Collection<String> groups = new HashSet<>();
+
+    Map<String, Object> claims = getAuthorizerClaims(event);
+
+    if (claims.containsKey("cognito:groups")) {
+      Object obj = claims.get("cognito:groups");
+      if (obj != null) {
+        String s = obj.toString().replaceFirst("^\\[", "").replaceAll("\\]$", "");
+        groups = new HashSet<>(Arrays.asList(s.split(" ")));
+        groups.removeIf(g -> g.length() == 0);
+      }
+    }
+    return groups;
   }
 
   /**
@@ -310,18 +334,7 @@ public class ApiAuthorizationBuilder {
 
   private Collection<String> loadJwtGroups(final ApiGatewayRequestEvent event) {
 
-    Collection<String> groups = new HashSet<>();
-
-    Map<String, Object> claims = getAuthorizerClaims(event);
-
-    if (claims.containsKey("cognito:groups")) {
-      Object obj = claims.get("cognito:groups");
-      if (obj != null) {
-        String s = obj.toString().replaceFirst("^\\[", "").replaceAll("\\]$", "");
-        groups = new HashSet<>(Arrays.asList(s.split(" ")));
-        groups.removeIf(g -> g.length() == 0);
-      }
-    }
+    Collection<String> groups = getRoles(event);
 
     String userRoleArn = getUserRoleArn(event);
     if (isIamCaller(userRoleArn)) {

@@ -389,7 +389,7 @@ public abstract class AbstractRestApiRequestHandler implements RequestStreamHand
       final ApiAuthorization authorization, final ApiGatewayRequestHandler handler)
       throws Exception {
 
-    Collection<ApiPermission> permissions = authorization.permissions();
+    Collection<ApiPermission> permissions = authorization.getPermissions();
 
     Optional<Boolean> hasAccess =
         handler.isAuthorized(getAwsServices(), method, event, authorization);
@@ -481,7 +481,8 @@ public abstract class AbstractRestApiRequestHandler implements RequestStreamHand
   private Optional<Boolean> isHandlerSiteIdRequired(final ApiAuthorization authorization,
       final ApiGatewayRequestHandler handler, final Optional<Boolean> hasAccess) {
     Optional<Boolean> result = hasAccess;
-    if (hasAccess.isEmpty() && authorization.siteIds().size() > 1 && !handler.isSiteIdRequired()) {
+    if (hasAccess.isEmpty() && authorization.getSiteIds().size() > 1
+        && !handler.isSiteIdRequired()) {
       result = Optional.of(Boolean.TRUE);
     }
     return result;
@@ -505,7 +506,8 @@ public abstract class AbstractRestApiRequestHandler implements RequestStreamHand
           requestContext.getRequestId(), identity.get("sourceIp"), requestContext.getRequestTime(),
           event.getHttpMethod(), event.getHttpMethod() + " " + event.getResource(),
           "{" + toStringFromMap(event.getPathParameters()) + "}", requestContext.getProtocol(),
-          authorization.username(), "{" + toStringFromMap(event.getQueryStringParameters()) + "}");
+          authorization.getUsername(),
+          "{" + toStringFromMap(event.getQueryStringParameters()) + "}");
 
       logger.log(s);
     } else {
@@ -542,7 +544,8 @@ public abstract class AbstractRestApiRequestHandler implements RequestStreamHand
 
     try {
 
-      List<ApiAuthorizationInterceptor> interceptors = setupApiAuthorizationInterceptor(awsServices);
+      List<ApiAuthorizationInterceptor> interceptors =
+          setupApiAuthorizationInterceptor(awsServices);
 
       ApiAuthorization authorization =
           new ApiAuthorizationBuilder().interceptors(interceptors).build(event);
@@ -615,10 +618,10 @@ public abstract class AbstractRestApiRequestHandler implements RequestStreamHand
     ApiGatewayRequestHandler handler = findRequestHandler(urlMap, method, resource);
 
     if (!isAuthorized(getAwsServices(), event, authorization, method, handler)) {
-      String s = String.format("fkq access denied (%s)", authorization.accessSummary());
-      if (authorization.siteId() == null && authorization.siteIds().size() > 1) {
+      String s = String.format("fkq access denied (%s)", authorization.getAccessSummary());
+      if (authorization.getSiteId() == null && authorization.getSiteIds().size() > 1) {
         s = String.format("'siteId' parameter required - multiple siteIds found (%s)",
-            authorization.accessSummary());
+            authorization.getAccessSummary());
       }
 
       throw new ForbiddenException(s);
@@ -648,7 +651,7 @@ public abstract class AbstractRestApiRequestHandler implements RequestStreamHand
         case SC_OK:
         case SC_CREATED:
         case SC_ACCEPTED:
-          String siteId = authorization.siteId();
+          String siteId = authorization.getSiteId();
           String body = getBodyAsString(event);
           String documentId = event.getPathParameters().get("documentId");
 
