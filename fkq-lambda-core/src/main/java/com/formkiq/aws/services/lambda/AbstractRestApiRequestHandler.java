@@ -542,10 +542,10 @@ public abstract class AbstractRestApiRequestHandler implements RequestStreamHand
 
     try {
 
-      List<ApiAuthorizationInterceptor> interceptor = setupApiAuthorizationInterceptor(awsServices);
+      List<ApiAuthorizationInterceptor> interceptors = setupApiAuthorizationInterceptor(awsServices);
 
       ApiAuthorization authorization =
-          new ApiAuthorizationBuilder().interceptors(interceptor).build(event);
+          new ApiAuthorizationBuilder().interceptors(interceptors).build(event);
       log(logger, event, authorization);
 
       ApiRequestHandlerInterceptor requestInterceptor =
