@@ -78,6 +78,7 @@ import com.formkiq.stacks.api.handler.DocumentsCompressRequestHandler;
 import com.formkiq.stacks.api.handler.DocumentsFulltextRequestHandler;
 import com.formkiq.stacks.api.handler.DocumentsFulltextRequestTagsKeyHandler;
 import com.formkiq.stacks.api.handler.DocumentsFulltextRequestTagsKeyValueHandler;
+import com.formkiq.stacks.api.handler.DocumentsIdAccessAttributesRequestHandler;
 import com.formkiq.stacks.api.handler.DocumentsIdUploadRequestHandler;
 import com.formkiq.stacks.api.handler.DocumentsOptionsRequestHandler;
 import com.formkiq.stacks.api.handler.DocumentsRequestHandler;
@@ -148,6 +149,11 @@ public abstract class AbstractCoreRequestHandler extends AbstractRestApiRequestH
   /** Url Class Map. */
   private static final Map<String, ApiGatewayRequestHandler> URL_MAP = new HashMap<>();
 
+  private static void addAccessControlEndpoints() {
+    addRequestHandler(new OpaConfigurationRequestHandler());
+    addRequestHandler(new DocumentsIdAccessAttributesRequestHandler());
+  }
+
   private static void addGroupUsersEndpoints() {
     addRequestHandler(new GroupsRequestHandler());
     addRequestHandler(new GroupsUsersRequestHandler());
@@ -192,7 +198,7 @@ public abstract class AbstractCoreRequestHandler extends AbstractRestApiRequestH
     addRequestHandler(new ConfigurationRequestHandler());
     addRequestHandler(new ConfigurationApiKeysRequestHandler());
     addRequestHandler(new ConfigurationApiKeyRequestHandler());
-    addRequestHandler(new OpaConfigurationRequestHandler());
+    addAccessControlEndpoints();
 
     addRequestHandler(new DocumentVersionsRequestHandler());
     addRequestHandler(new DocumentVersionsKeyRequestHandler());

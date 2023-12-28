@@ -65,6 +65,18 @@ public interface DynamodbRecord<T> {
   T getFromAttributes(String siteId, Map<String, AttributeValue> attrs);
 
   /**
+   * Convert {@link Map} {@link AttributeValue}.
+   * 
+   * @param attrs {@link Map} {@link AttributeValue}
+   * @param key {@link Double}
+   * @return {@link String}
+   */
+  default Double nn(final Map<String, AttributeValue> attrs, final String key) {
+    AttributeValue av = attrs.get(key);
+    return av != null ? Double.valueOf(av.n()) : null;
+  }
+
+  /**
    * Get DynamoDb PK.
    * 
    * @param siteId {@link String}
