@@ -256,7 +256,7 @@ public class AwsServiceCache {
    * @param extension {@link AwsServiceExtension}
    */
   public <T> void register(final Class<T> clazz, final AwsServiceExtension<T> extension) {
-    register(clazz, extension, false);
+    register(clazz, extension, true);
   }
 
   /**
@@ -267,7 +267,7 @@ public class AwsServiceCache {
    * @param extension {@link AwsServiceExtension}
    * @param overwrite boolean
    */
-  public <T> void register(final Class<T> clazz, final AwsServiceExtension<T> extension,
+  private <T> void register(final Class<T> clazz, final AwsServiceExtension<T> extension,
       final boolean overwrite) {
 
     List<AwsServiceExtension<?>> list = null;
@@ -279,5 +279,16 @@ public class AwsServiceCache {
 
     list.add(extension);
     this.extensions.put(clazz, list);
+  }
+
+  /**
+   * Registers an {@link AwsServiceExtension}.
+   * 
+   * @param clazz {@link Class}
+   * @param <T> Type of Class
+   * @param extension {@link AwsServiceExtension}
+   */
+  public <T> void registerAppend(final Class<T> clazz, final AwsServiceExtension<T> extension) {
+    register(clazz, extension, false);
   }
 }

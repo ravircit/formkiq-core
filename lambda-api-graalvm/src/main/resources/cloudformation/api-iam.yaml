@@ -403,7 +403,7 @@ Resources:
               summary: Delete OPA Configuration
               description: Delete OPA Configuration
               tags:
-              - Documents
+              - System Management
               parameters:
               - $ref: '#/components/parameters/siteIdParam'
               responses:

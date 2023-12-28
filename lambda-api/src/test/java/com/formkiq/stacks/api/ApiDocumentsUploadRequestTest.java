@@ -469,7 +469,7 @@ public class ApiDocumentsUploadRequestTest extends AbstractRequestHandler {
 
       final String tagSchemaId = UUID.randomUUID().toString();
       getAwsServices().register(DocumentTagSchemaPlugin.class,
-          new DocumentTagSchemaPluginExtension(new DocumentTagSchemaReturnErrors()), true);
+          new DocumentTagSchemaPluginExtension(new DocumentTagSchemaReturnErrors()));
 
       ApiGatewayRequestEvent event =
           toRequestEvent("/request-get-documents-upload-documentid.json");
@@ -504,7 +504,7 @@ public class ApiDocumentsUploadRequestTest extends AbstractRequestHandler {
   public void testHandlePostDocumentsUpload03() throws Exception {
     // given
     getAwsServices().register(DocumentTagSchemaPlugin.class,
-        new DocumentTagSchemaPluginExtension(new DocumentTagSchemaReturnNewTags()), true);
+        new DocumentTagSchemaPluginExtension(new DocumentTagSchemaReturnNewTags()));
 
     for (String siteId : Arrays.asList(null, UUID.randomUUID().toString())) {
       String tagSchemaId = UUID.randomUUID().toString();
