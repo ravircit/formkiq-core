@@ -57,10 +57,12 @@ public class DocumentAccessAttributesRecord
    * 
    * @param key {@link String}
    * @param booleanValue {@link Boolean}
+   * @return {@link DocumentAccessAttributesRecord}
    */
-  public void addBooleanValue(final String key, final Boolean booleanValue) {
+  public DocumentAccessAttributesRecord addBooleanValue(final String key,
+      final Boolean booleanValue) {
     this.attributes.put(key, booleanValue);
-
+    return this;
   }
 
   /**
@@ -68,9 +70,11 @@ public class DocumentAccessAttributesRecord
    * 
    * @param key {@link String}
    * @param numberValue {@link Double}
+   * @return {@link DocumentAccessAttributesRecord}
    */
-  public void addNumberValue(final String key, final Double numberValue) {
+  public DocumentAccessAttributesRecord addNumberValue(final String key, final Double numberValue) {
     this.attributes.put(key, numberValue);
+    return this;
   }
 
   /**
@@ -78,9 +82,11 @@ public class DocumentAccessAttributesRecord
    * 
    * @param key {@link String}
    * @param stringValue {@link String}
+   * @return {@link DocumentAccessAttributesRecord}
    */
-  public void addStringValue(final String key, final String stringValue) {
+  public DocumentAccessAttributesRecord addStringValue(final String key, final String stringValue) {
     this.attributes.put(key, stringValue);
+    return this;
   }
 
   /**

@@ -55,9 +55,11 @@ public class ApiAuthorization {
    * 
    * @param key {@link String}
    * @param o {@link Object}
+   * @return {@link ApiAuthorization}
    */
-  public void addCacheObject(final String key, final Object o) {
+  public ApiAuthorization addCacheObject(final String key, final Object o) {
     this.cache.put(key, o);
+    return this;
   }
 
   /**
