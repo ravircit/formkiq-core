@@ -24,7 +24,6 @@
 package com.formkiq.aws.dynamodb;
 
 import static com.formkiq.aws.dynamodb.SiteIdKeyGenerator.createDatabaseKey;
-import static software.amazon.awssdk.services.dynamodb.model.AttributeValue.fromS;
 import java.util.HashMap;
 import java.util.Map;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
