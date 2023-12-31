@@ -48,6 +48,16 @@ public interface DynamodbRecord<T> {
   }
 
   /**
+   * Convert {@link String} to {@link AttributeValue}.
+   * 
+   * @param str {@link String}
+   * @return {@link AttributeValue}
+   */
+  default AttributeValue fromS(final String str) {
+    return AttributeValue.fromS(str);
+  }
+
+  /**
    * Get {@link AttributeValue} {@link Map}.
    * 
    * @param siteId {@link String}
