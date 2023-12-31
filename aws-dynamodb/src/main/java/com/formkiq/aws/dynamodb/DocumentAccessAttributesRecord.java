@@ -24,45 +24,74 @@
 package com.formkiq.aws.dynamodb;
 
 import static com.formkiq.aws.dynamodb.SiteIdKeyGenerator.createDatabaseKey;
-import static software.amazon.awssdk.services.dynamodb.model.AttributeValue.fromBool;
-import static software.amazon.awssdk.services.dynamodb.model.AttributeValue.fromN;
 import static software.amazon.awssdk.services.dynamodb.model.AttributeValue.fromS;
 import java.util.HashMap;
 import java.util.Map;
-import com.formkiq.graalvm.annotations.Reflectable;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 /**
  * Document Access Attributes Record.
  */
-@Reflectable
 public class DocumentAccessAttributesRecord
     implements DynamodbRecord<DocumentAccessAttributesRecord>, DbKeys {
 
-  /** Access Attribute String Value. */
-  @Reflectable
-  private Boolean booleanValue;
+  /** Boolean Access Attributes. */
+  private static final String PREFIX_BOOLEAN = "aab#";
+  /** Number Access Attributes. */
+  private static final String PREFIX_NUMBER = "aan#";
+  /** String Access Attributes. */
+  private static final String PREFIX_STRING = "aas#";
+  /** Access Attributes. */
+  private Map<String, Object> attributes;
   /** DocumentId. */
-  @Reflectable
   private String documentId;
-  /** Access Attribute Key. */
-  @Reflectable
-  private String key;
-  /** Access Attribute Nunber Value. */
-  @Reflectable
-  private Double numberValue;
-  /** Access Attribute String Value. */
-  @Reflectable
-  private String stringValue;
 
   /**
-   * Set {@link Boolean} value.
+   * constructor.
+   */
+  public DocumentAccessAttributesRecord() {
+    this.attributes = new HashMap<>();
+  }
+
+  /**
+   * Add Boolean Value.
    * 
-   * @param value {@link Boolean}
+   * @param key {@link String}
+   * @param booleanValue {@link Boolean}
+   */
+  public void addBooleanValue(final String key, final Boolean booleanValue) {
+    this.attributes.put(key, booleanValue);
+
+  }
+
+  /**
+   * Add Number Value.
+   * 
+   * @param key {@link String}
+   * @param numberValue {@link Double}
+   */
+  public void addNumberValue(final String key, final Double numberValue) {
+    this.attributes.put(key, numberValue);
+  }
+
+  /**
+   * Add {@link String} Value.
+   * 
+   * @param key {@link String}
+   * @param stringValue {@link String}
+   */
+  public void addStringValue(final String key, final String stringValue) {
+    this.attributes.put(key, stringValue);
+  }
+
+  /**
+   * Set Access Attributes.
+   * 
+   * @param accessAttributes {@link Map}
    * @return {@link DocumentAccessAttributesRecord}
    */
-  public DocumentAccessAttributesRecord booleanValue(final Boolean value) {
-    this.booleanValue = value;
+  public DocumentAccessAttributesRecord attributes(final Map<String, Object> accessAttributes) {
+    this.attributes = accessAttributes;
     return this;
   }
 
@@ -77,25 +106,35 @@ public class DocumentAccessAttributesRecord
     return this;
   }
 
+  /**
+   * Get Access Attributes.
+   * 
+   * @return {@link Map}
+   */
+  public Map<String, Object> getAttributes() {
+    return this.attributes;
+  }
+
   @Override
   public Map<String, AttributeValue> getAttributes(final String siteId) {
 
-    String number = this.numberValue != null ? this.numberValue.toString() : null;
-    Map<String, AttributeValue> attrs =
-        new HashMap<>(Map.of(DbKeys.PK, fromS(pk(siteId)), DbKeys.SK, fromS(sk()), "documentId",
-            fromS(this.documentId), "key", fromS(this.key), "stringValue", fromS(this.stringValue),
-            "numberValue", fromN(number), "booleanValue", fromBool(this.booleanValue)));
+    Map<String, AttributeValue> attrs = new HashMap<>(Map.of(DbKeys.PK, fromS(pk(siteId)),
+        DbKeys.SK, fromS(sk()), "documentId", fromS(this.documentId)));
+
+    for (Map.Entry<String, Object> e : this.attributes.entrySet()) {
+
+      String key = e.getKey();
+
+      if (e.getValue() instanceof Double) {
+        attrs.put(PREFIX_NUMBER + key, AttributeValue.fromN(((Double) e.getValue()).toString()));
+      } else if (e.getValue() instanceof Boolean) {
+        attrs.put(PREFIX_BOOLEAN + key, AttributeValue.fromBool((Boolean) e.getValue()));
+      } else {
+        attrs.put(PREFIX_STRING + key, AttributeValue.fromS((String) e.getValue()));
+      }
+    }
 
     return attrs;
-  }
-
-  /**
-   * Get {@link Boolean} value.
-   * 
-   * @return {@link Boolean}
-   */
-  public Boolean getBooleanValue() {
-    return this.booleanValue;
   }
 
   /**
@@ -112,60 +151,22 @@ public class DocumentAccessAttributesRecord
       final Map<String, AttributeValue> attrs) {
 
     DocumentAccessAttributesRecord record =
-        new DocumentAccessAttributesRecord().documentId(ss(attrs, "documentId"))
-            .key(ss(attrs, "key")).stringValue(ss(attrs, "stringValue"))
-            .numberValue(nn(attrs, "numberValue")).booleanValue(bb(attrs, "booleanValue"));
+        new DocumentAccessAttributesRecord().documentId(ss(attrs, "documentId"));
+
+    for (Map.Entry<String, AttributeValue> e : attrs.entrySet()) {
+      String key = e.getKey();
+
+      if (key.startsWith(PREFIX_BOOLEAN)) {
+        record.addBooleanValue(key.substring(PREFIX_BOOLEAN.length()), e.getValue().bool());
+      } else if (key.startsWith(PREFIX_NUMBER)) {
+        record.addNumberValue(key.substring(PREFIX_NUMBER.length()),
+            Double.valueOf(e.getValue().n()));
+      } else if (key.startsWith(PREFIX_STRING)) {
+        record.addStringValue(key.substring(PREFIX_STRING.length()), e.getValue().s());
+      }
+    }
 
     return record;
-  }
-
-  /**
-   * Get Key.
-   * 
-   * @return {@link String}
-   */
-  public String getKey() {
-    return this.key;
-  }
-
-  /**
-   * Get {@link Double} value.
-   * 
-   * @return {@link Double}
-   */
-  public Double getNumberValue() {
-    return this.numberValue;
-  }
-
-  /**
-   * Get {@link String} value.
-   * 
-   * @return {@link String}
-   */
-  public String getStringValue() {
-    return this.stringValue;
-  }
-
-  /**
-   * Set Key.
-   * 
-   * @param accessAttributeKey {@link String}
-   * @return {@link DocumentAccessAttributesRecord}
-   */
-  public DocumentAccessAttributesRecord key(final String accessAttributeKey) {
-    this.key = accessAttributeKey;
-    return this;
-  }
-
-  /**
-   * Set {@link Double} value.
-   * 
-   * @param value {@link Double}
-   * @return {@link DocumentAccessAttributesRecord}
-   */
-  public DocumentAccessAttributesRecord numberValue(final Double value) {
-    this.numberValue = value;
-    return this;
   }
 
   @Override
@@ -199,16 +200,5 @@ public class DocumentAccessAttributesRecord
   @Override
   public String skGsi2() {
     return null;
-  }
-
-  /**
-   * Set {@link String} value.
-   * 
-   * @param value {@link String}
-   * @return {@link DocumentAccessAttributesRecord}
-   */
-  public DocumentAccessAttributesRecord stringValue(final String value) {
-    this.stringValue = value;
-    return this;
   }
 }

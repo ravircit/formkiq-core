@@ -44,7 +44,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import com.formkiq.aws.dynamodb.DocumentAccessAttributesRecord;
 import com.formkiq.aws.dynamodb.DynamicObject;
 import com.formkiq.aws.dynamodb.PaginationResult;
 import com.formkiq.aws.dynamodb.SiteIdKeyGenerator;
@@ -411,13 +410,8 @@ public class DocumentIdRequestHandler
       final DynamicDocumentItem item, final Collection<ValidationError> errors) {
 
     List<DynamicObject> list = item.getList("accessAttributes");
-    List<DocumentAccessAttributesRecord> records = list.stream()
-        .map(a -> new DocumentAccessAttributesRecord().documentId(item.getDocumentId())
-            .stringValue(a.getString("stringValue")).booleanValue(a.getBoolean("booleanValue"))
-            .numberValue(a.getDouble("numberValue")))
-        .collect(Collectors.toList());
 
-    if (!awsservice.hasModule("opa") && !records.isEmpty()) {
+    if (!awsservice.hasModule("opa") && list != null && !list.isEmpty()) {
       errors.add(new ValidationErrorImpl().key("accessAttributes")
           .error("Access attributes are only supported with the 'open policy access' module"));
     }
