@@ -192,6 +192,15 @@ public class DocumentAccessAttributesRecord
     return null;
   }
 
+  /**
+   * Remove Attribute Key.
+   * 
+   * @param key {@link String}
+   */
+  public void removeAttribute(final String key) {
+    this.attributes.remove(key);
+  }
+
   @Override
   public String sk() {
     return "accessAttributes";

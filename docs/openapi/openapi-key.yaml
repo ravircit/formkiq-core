@@ -1399,7 +1399,7 @@
                 $ref: '#/components/x-amazon-apigateway-integrations/searchLambdaApi200'
           /searchFulltext:
             post:
-              operationId: DocumentFulltext
+              operationId: SearchFulltext
               summary: Document full-text search
               description: Document full-text search (and more robust multi-tag search queries, powered by OpenSearch); ONLY available with FormKiQ Enterprise
               tags:
@@ -5005,6 +5005,10 @@
                   additionalProperties:
                     type: object
                 metadata:
+                  type: object
+                  additionalProperties:
+                    type: object
+                accessAttributes:
                   type: object
                   additionalProperties:
                     type: object

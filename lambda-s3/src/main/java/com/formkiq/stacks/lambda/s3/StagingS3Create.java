@@ -145,9 +145,9 @@ public class StagingS3Create implements RequestHandler<Map<String, Object>, Void
     if (System.getenv().containsKey("AWS_REGION")) {
       serviceCache = new AwsServiceCacheBuilder(System.getenv(), Map.of(),
           EnvironmentVariableCredentialsProvider.create())
-              .addService(new DynamoDbAwsServiceRegistry(), new S3AwsServiceRegistry(),
-                  new SnsAwsServiceRegistry(), new SmsAwsServiceRegistry())
-              .build();
+          .addService(new DynamoDbAwsServiceRegistry(), new S3AwsServiceRegistry(),
+              new SnsAwsServiceRegistry(), new SmsAwsServiceRegistry())
+          .build();
 
       initialize(serviceCache);
     }
@@ -742,7 +742,7 @@ public class StagingS3Create implements RequestHandler<Map<String, Object>, Void
       final DynamicDocumentItem loadedDoc) {
 
     if (loadedDoc.containsKey("accessAttributes")) {
-      
+
       List<Map<String, Object>> attributes =
           (List<Map<String, Object>>) loadedDoc.get("accessAttributes");
 
