@@ -105,6 +105,9 @@ Resources:
           - name: e-signature
             description: E-Signature API
             x-displayName: E-Signature
+          - name: caseManagement
+            description: Case Management API
+            x-displayName: Case Management
           - name: Application
             x-amazon-apigateway-tag-value: "FormKiQ"
           - name: AppEnvironment
@@ -3651,6 +3654,243 @@ Resources:
               - ApiAuthorization: []
               x-amazon-apigateway-integration:
                 $ref: "#/components/x-amazon-apigateway-integrations/lambdaApi200"
+          /cases:
+            get:
+              operationId: GetCases
+              tags:
+              - Case Management
+              description: Returns a list of the Cases; ONLY available with FormKiQ Enterprise
+              summary: Get Case listing
+              parameters:
+              - $ref: '#/components/parameters/siteIdParam'
+              - name: "next"
+                in: "query"
+                description: "Next page of results token"
+                schema:
+                  type: "string"
+              - $ref: '#/components/parameters/limitParam'
+              responses:
+                '200':
+                  description: "200 OK"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      schema:
+                        type: "string"
+                    Access-Control-Allow-Methods:
+                      schema:
+                        type: "string"
+                    Access-Control-Allow-Headers:
+                      schema:
+                        type: "string"
+                  content:
+                    application/json:
+                      schema:
+                        "$ref": "#/components/schemas/GetCasesResponse"
+              security:
+              - ApiAuthorization: []
+              x-amazon-apigateway-integration:
+                $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
+            post:
+              operationId: AddCase
+              summary: Add New Case
+              description: Adds new case; ONLY available with FormKiQ Enterprise 
+              tags:
+              - Case Management
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/AddCaseRequest'
+              responses:
+                '200':
+                  description: 200 OK
+                  headers:
+                    Access-Control-Allow-Origin:
+                       $ref: '#/components/headers/AccessControlAllowOrigin'
+                    Access-Control-Allow-Methods:
+                       $ref: '#/components/headers/AccessControlAllowMethods'
+                    Access-Control-Allow-Headers:
+                      $ref: '#/components/headers/AccessControlAllowHeaders'
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/AddCaseResponse'
+              x-amazon-apigateway-integration:
+                $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
+          /cases/{caseId}:
+            get:
+              operationId: GetCase
+              tags:
+              - Case Management
+              description: Returns a Case; ONLY available with FormKiQ Enterprise
+              summary: Get Case details
+              parameters:
+              - $ref: '#/components/parameters/siteIdParam'
+              - $ref: '#/components/parameters/caseIdParam'
+              responses:
+                '200':
+                  description: "200 OK"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      schema:
+                        type: "string"
+                    Access-Control-Allow-Methods:
+                      schema:
+                        type: "string"
+                    Access-Control-Allow-Headers:
+                      schema:
+                        type: "string"
+                  content:
+                    application/json:
+                      schema:
+                        "$ref": "#/components/schemas/GetCaseResponse"
+              security:
+              - ApiAuthorization: []
+              x-amazon-apigateway-integration:
+                $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
+            patch:
+              operationId: UpdateCase
+              summary: Update existing Case
+              description: Updates existing case; ONLY available with FormKiQ Enterprise
+              parameters:
+              - $ref: '#/components/parameters/siteIdParam'
+              - $ref: '#/components/parameters/caseIdParam'
+              tags:
+              - Case Management
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/UpdateCaseRequest'
+              responses:
+                '200':
+                  description: 200 OK
+                  headers:
+                    Access-Control-Allow-Origin:
+                       $ref: '#/components/headers/AccessControlAllowOrigin'
+                    Access-Control-Allow-Methods:
+                       $ref: '#/components/headers/AccessControlAllowMethods'
+                    Access-Control-Allow-Headers:
+                      $ref: '#/components/headers/AccessControlAllowHeaders'
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/UpdateCaseResponse'
+              x-amazon-apigateway-integration:
+                $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
+          /cases/{caseId}/documents:
+            get:
+              operationId: GetCaseDocuments
+              tags:
+              - Case Management
+              description: Returns a Case; ONLY available with FormKiQ Enterprise
+              summary: Get list of document in a case
+              parameters:
+              - $ref: '#/components/parameters/siteIdParam'
+              - $ref: '#/components/parameters/caseIdParam'
+              - name: "next"
+                in: "query"
+                description: "Next page of results token"
+                schema:
+                  type: "string"
+              - $ref: '#/components/parameters/limitParam'
+              responses:
+                '200':
+                  description: "200 OK"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      schema:
+                        type: "string"
+                    Access-Control-Allow-Methods:
+                      schema:
+                        type: "string"
+                    Access-Control-Allow-Headers:
+                      schema:
+                        type: "string"
+                  content:
+                    application/json:
+                      schema:
+                        "$ref": "#/components/schemas/GetCaseDocumentsResponse"
+              security:
+              - ApiAuthorization: []
+              x-amazon-apigateway-integration:
+                $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
+          /cases/{caseId}/tasks:
+            get:
+              operationId: GetCaseTasks
+              tags:
+              - Case Management
+              description: Returns a Case; ONLY available with FormKiQ Enterprise
+              summary: Get list of tasks in a case
+              parameters:
+              - $ref: '#/components/parameters/siteIdParam'
+              - $ref: '#/components/parameters/caseIdParam'
+              - name: "next"
+                in: "query"
+                description: "Next page of results token"
+                schema:
+                  type: "string"
+              - $ref: '#/components/parameters/limitParam'
+              responses:
+                '200':
+                  description: "200 OK"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      schema:
+                        type: "string"
+                    Access-Control-Allow-Methods:
+                      schema:
+                        type: "string"
+                    Access-Control-Allow-Headers:
+                      schema:
+                        type: "string"
+                  content:
+                    application/json:
+                      schema:
+                        "$ref": "#/components/schemas/GetCaseTasksResponse"
+              security:
+              - ApiAuthorization: []
+              x-amazon-apigateway-integration:
+                $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
+          /cases/{caseId}/nigos:
+            get:
+              operationId: GetCaseNigos
+              tags:
+              - Case Management
+              description: Returns a Nigos of Case; ONLY available with FormKiQ Enterprise
+              summary: Get list of Nigos in a case
+              parameters:
+              - $ref: '#/components/parameters/siteIdParam'
+              - $ref: '#/components/parameters/caseIdParam'
+              - name: "next"
+                in: "query"
+                description: "Next page of results token"
+                schema:
+                  type: "string"
+              - $ref: '#/components/parameters/limitParam'
+              responses:
+                '200':
+                  description: "200 OK"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      schema:
+                        type: "string"
+                    Access-Control-Allow-Methods:
+                      schema:
+                        type: "string"
+                    Access-Control-Allow-Headers:
+                      schema:
+                        type: "string"
+                  content:
+                    application/json:
+                      schema:
+                        "$ref": "#/components/schemas/GetCaseNigosResponse"
+              security:
+              - ApiAuthorization: []
+              x-amazon-apigateway-integration:
+                $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
         components:
           headers:
             AccessControlAllowOrigin:
@@ -3727,6 +3967,13 @@ Resources:
               in: query
               description: Site Identifier
               required: false
+              schema:
+                type: string
+            caseIdParam:
+              name: caseId
+              in: path
+              description: Case Identifier
+              required: true
               schema:
                 type: string
             documentSearchDeleted:
@@ -5317,6 +5564,255 @@ Resources:
                 type:
                   type: "string"
                   description: "Tag type"
+            AddCaseResponse:
+              type: "object"
+              properties:
+                caseId:
+                  type: "string"
+                  description: "Case Identifier"
+            AddCaseRequest:
+              required:
+              - "name"
+              type: "object"
+              properties:
+                name:
+                  type: "string"
+                  description: "Case Name"
+                status:
+                  type: string
+                  description: Status of the Document Action
+                  enum:
+                    - NEW
+                    - ASSIGNED
+                    - IN_PROGRESS
+                    - ON_HOLD
+                    - ESCALATED
+                    - RESOLVED
+                    - CLOSED
+                    - UNDER_REVIEW
+                    - AWAITING_CLIENT_RESPONSE
+                documentIds:
+                  type: "array"
+                  items:
+                    type: "string"
+                tasks:
+                  type: "array"
+                  items:
+                    $ref: "#/components/schemas/AddTask"
+                nigos:
+                  type: "array"
+                  items:
+                    $ref: "#/components/schemas/AddNigo"
+            UpdateCaseResponse:
+              type: "object"
+              properties:
+                caseId:
+                  type: "string"
+                  description: "Case Identifier"
+            UpdateCaseRequest:
+              type: "object"
+              properties:
+                name:
+                  type: "string"
+                  description: "Case Name"
+                status:
+                  type: string
+                  description: Status of the Document Action
+                  enum:
+                    - NEW
+                    - ASSIGNED
+                    - IN_PROGRESS
+                    - ON_HOLD
+                    - ESCALATED
+                    - RESOLVED
+                    - CLOSED
+                    - UNDER_REVIEW
+                    - AWAITING_CLIENT_RESPONSE
+                documentIds:
+                  type: "array"
+                  items:
+                    type: "string"
+                tasks:
+                  type: "array"
+                  items:
+                    $ref: "#/components/schemas/AddTask"
+                nigos:
+                  type: "array"
+                  items:
+                    $ref: "#/components/schemas/AddNigo"
+            AddTask:
+              required:
+              - "name"
+              type: "object"
+              properties:
+                description:
+                  type: "string"
+                  description: "Description of Task"
+                status:
+                  type: string
+                  description: Status of the Document Action
+                  enum:
+                    - NEW
+                    - ASSIGNED
+                    - IN_PROGRESS
+                    - ON_HOLD
+                    - ESCALATED
+                    - RESOLVED
+                    - CLOSED
+                    - REOPENED
+                    - UNDER_REVIEW
+                documentIds:
+                  type: "array"
+                  items:
+                    type: "string"
+            AddNigo:
+              required:
+              - "name"
+              type: "object"
+              properties:
+                description:
+                  type: "string"
+                  description: "Description of Task"
+                status:
+                  type: string
+                  description: Status of the Document Action
+                  enum:
+                    - NEW
+                    - ASSIGNED
+                    - IN_PROGRESS
+                    - ON_HOLD
+                    - ESCALATED
+                    - RESOLVED
+                    - CLOSED
+                    - REOPENED
+                    - UNDER_REVIEW
+                documentIds:
+                  type: "array"
+                  items:
+                    type: "string"
+            Task:
+              type: "object"
+              properties:
+                insertedDate:
+                  type: "string"
+                  description: "Inserted Timestamp"
+                description:
+                  type: "string"
+                  description: "Description of Task"
+                status:
+                  type: string
+                  description: Status of the Document Action
+                  enum:
+                    - NEW
+                    - ASSIGNED
+                    - IN_PROGRESS
+                    - ON_HOLD
+                    - ESCALATED
+                    - RESOLVED
+                    - CLOSED
+                    - REOPENED
+                    - UNDER_REVIEW
+                documentIds:
+                  type: "array"
+                  items:
+                    type: "string"
+            Nigo:
+              type: "object"
+              properties:
+                insertedDate:
+                  type: "string"
+                  description: "Inserted Timestamp"
+                description:
+                  type: "string"
+                  description: "Description of Task"
+                status:
+                  type: string
+                  description: Status of the Document Action
+                  enum:
+                    - NEW
+                    - ASSIGNED
+                    - IN_PROGRESS
+                    - ON_HOLD
+                    - ESCALATED
+                    - RESOLVED
+                    - CLOSED
+                    - REOPENED
+                    - UNDER_REVIEW
+                documentIds:
+                  type: "array"
+                  items:
+                    type: "string"
+            GetCasesResponse:
+              type: "object"
+              properties:
+                next:
+                  type: "string"
+                  description: "Next page of results token"
+                cases:
+                  type: "array"
+                  description: "List of cases"
+                  items:
+                    $ref: "#/components/schemas/Case"
+            GetCaseNigosResponse:
+              type: "object"
+              properties:
+                next:
+                  type: "string"
+                  description: "Next page of results token"
+                tasks:
+                  type: "array"
+                  description: "List of tasks"
+                  items:
+                    $ref: "#/components/schemas/Nigo"
+            GetCaseTasksResponse:
+              type: "object"
+              properties:
+                next:
+                  type: "string"
+                  description: "Next page of results token"
+                tasks:
+                  type: "array"
+                  description: "List of tasks"
+                  items:
+                    $ref: "#/components/schemas/Task"
+            GetCaseDocumentsResponse:
+              type: "object"
+              properties:
+                next:
+                  type: "string"
+                  description: "Next page of results token"
+                cases:
+                  type: "array"
+                  description: "List of documents"
+                  items:
+                    $ref: "#/components/schemas/Document"
+            GetCaseResponse:
+              type: "object"
+              properties:
+                case:
+                  $ref: "#/components/schemas/Case"
+            Case:
+              type: "object"
+              properties:
+                insertedDate:
+                  type: "string"
+                  description: "Inserted Timestamp"
+                name:
+                  type: "string"
+                  description: "Case Name"
+                status:
+                  type: string
+                  description: Status of the Document Action
+                  enum:
+                    - NEW
+                    - ASSIGNED
+                    - IN_PROGRESS
+                    - ON_HOLD
+                    - ESCALATED
+                    - RESOLVED
+                    - CLOSED
+                    - UNDER_REVIEW
+                    - AWAITING_CLIENT_RESPONSE
             GetDocumentsResponse:
               type: "object"
               properties:
@@ -6583,6 +7079,20 @@ Resources:
               type: "aws_proxy"
               payloadFormatVersion: "1.0"
             esignatureLambdaApi200:
+              uri:
+                Fn::Sub: "arn:${Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DocumentsApiRequests.Arn}/invocations"
+              responses:
+                default:
+                  statusCode: "200"
+                  responseParameters:
+                    method.response.header.Access-Control-Allow-Methods: "'*'"
+                    method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+                    method.response.header.Access-Control-Allow-Origin: "'*'"
+              passthroughBehavior: "when_no_templates"
+              httpMethod: "POST"
+              type: "aws_proxy"
+              payloadFormatVersion: "1.0"
+            caseManagementLambdaApi200:
               uri:
                 Fn::Sub: "arn:${Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DocumentsApiRequests.Arn}/invocations"
               responses:
