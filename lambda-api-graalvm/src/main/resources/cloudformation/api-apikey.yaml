@@ -3819,6 +3819,39 @@ Resources:
               - ApiAuthorization: []
               x-amazon-apigateway-integration:
                 $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
+          /cases/{caseId}/tasks/{taskId}:
+            patch:
+              operationId: UpdateTask
+              summary: Update existing Task
+              description: Updates existing task; ONLY available with FormKiQ Enterprise
+              parameters:
+              - $ref: '#/components/parameters/siteIdParam'
+              - $ref: '#/components/parameters/caseIdParam'
+              - $ref: '#/components/parameters/taskIdParam'
+              tags:
+              - Case Management
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/UpdateTaskRequest'
+              responses:
+                '200':
+                  description: 200 OK
+                  headers:
+                    Access-Control-Allow-Origin:
+                       $ref: '#/components/headers/AccessControlAllowOrigin'
+                    Access-Control-Allow-Methods:
+                       $ref: '#/components/headers/AccessControlAllowMethods'
+                    Access-Control-Allow-Headers:
+                      $ref: '#/components/headers/AccessControlAllowHeaders'
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/UpdateTaskResponse'
+              x-amazon-apigateway-integration:
+                $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
           /cases/{caseId}/tasks/{taskId}/documents:
             get:
               operationId: GetTaskDocuments
@@ -3855,6 +3888,39 @@ Resources:
                         "$ref": "#/components/schemas/GetCaseDocumentsResponse"
               security:
               - ApiAuthorization: []
+              x-amazon-apigateway-integration:
+                $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
+          /cases/{caseId}/nigos/{nigoId}:
+            patch:
+              operationId: UpdateNigo
+              summary: Update existing Nigo
+              description: Updates existing nigo; ONLY available with FormKiQ Enterprise
+              parameters:
+              - $ref: '#/components/parameters/siteIdParam'
+              - $ref: '#/components/parameters/caseIdParam'
+              - $ref: '#/components/parameters/nigoIdParam'
+              tags:
+              - Case Management
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/UpdateNigoRequest'
+              responses:
+                '200':
+                  description: 200 OK
+                  headers:
+                    Access-Control-Allow-Origin:
+                       $ref: '#/components/headers/AccessControlAllowOrigin'
+                    Access-Control-Allow-Methods:
+                       $ref: '#/components/headers/AccessControlAllowMethods'
+                    Access-Control-Allow-Headers:
+                      $ref: '#/components/headers/AccessControlAllowHeaders'
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/UpdateNigoResponse'
               x-amazon-apigateway-integration:
                 $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
           /cases/{caseId}/nigos/{nigoId}/documents:
@@ -5664,6 +5730,13 @@ Resources:
                   description: "Case Identifier"
             AddCaseRequest:
               required:
+              - "case"
+              type: "object"
+              properties:
+                case:
+                  $ref: "#/components/schemas/AddCase"
+            AddCase:
+              required:
               - "name"
               type: "object"
               properties:
@@ -5671,18 +5744,8 @@ Resources:
                   type: "string"
                   description: "Case Name"
                 status:
-                  type: string
-                  description: Status of the Document Action
-                  enum:
-                    - NEW
-                    - ASSIGNED
-                    - IN_PROGRESS
-                    - ON_HOLD
-                    - ESCALATED
-                    - RESOLVED
-                    - CLOSED
-                    - UNDER_REVIEW
-                    - AWAITING_CLIENT_RESPONSE
+                  $ref: "#/components/schemas/CaseStatus"
+                  description: Status of the Case
                 documentIds:
                   type: "array"
                   items:
@@ -5704,55 +5767,115 @@ Resources:
             UpdateCaseRequest:
               type: "object"
               properties:
+                case:
+                  $ref: "#/components/schemas/UpdateCase"
+            UpdateCase:
+              type: "object"
+              properties:
                 name:
                   type: "string"
                   description: "Case Name"
                 status:
-                  type: string
-                  description: Status of the Document Action
-                  enum:
-                    - NEW
-                    - ASSIGNED
-                    - IN_PROGRESS
-                    - ON_HOLD
-                    - ESCALATED
-                    - RESOLVED
-                    - CLOSED
-                    - UNDER_REVIEW
-                    - AWAITING_CLIENT_RESPONSE
+                  $ref: "#/components/schemas/CaseStatus"
                 documentIds:
                   type: "array"
                   items:
                     type: "string"
-                tasks:
-                  type: "array"
-                  items:
-                    $ref: "#/components/schemas/AddTask"
-                nigos:
-                  type: "array"
-                  items:
-                    $ref: "#/components/schemas/AddNigo"
-            AddTask:
-              required:
-              - "name"
+            CaseStatus:
+              type: string
+              description: Status of the Case
+              enum:
+                - NEW
+                - ASSIGNED
+                - IN_PROGRESS
+                - ON_HOLD
+                - ESCALATED
+                - RESOLVED
+                - CLOSED
+                - UNDER_REVIEW
+                - AWAITING_CLIENT_RESPONSE 
+            TaskStatus:
+              type: string
+              description: Status of the Task
+              enum:
+                - NEW
+                - ASSIGNED
+                - IN_PROGRESS
+                - ON_HOLD
+                - ESCALATED
+                - RESOLVED
+                - CLOSED
+                - UNDER_REVIEW
+                - AWAITING_CLIENT_RESPONSE 
+            NigoStatus:
+              type: string
+              description: Status of the Nigo
+              enum:
+                - NEW
+                - ASSIGNED
+                - IN_PROGRESS
+                - ON_HOLD
+                - ESCALATED
+                - RESOLVED
+                - CLOSED
+                - UNDER_REVIEW
+                - AWAITING_CLIENT_RESPONSE
+            UpdateTaskResponse:
+              type: "object"
+              properties:
+                taskId:
+                  type: "string"
+                  description: "Task Identifier" 
+            UpdateTaskRequest:
+              type: "object"
+              properties:
+                task:
+                  $ref: "#/components/schemas/UpdateTask"
+            UpdateTask:
               type: "object"
               properties:
                 description:
                   type: "string"
                   description: "Description of Task"
                 status:
-                  type: string
-                  description: Status of the Document Action
-                  enum:
-                    - NEW
-                    - ASSIGNED
-                    - IN_PROGRESS
-                    - ON_HOLD
-                    - ESCALATED
-                    - RESOLVED
-                    - CLOSED
-                    - REOPENED
-                    - UNDER_REVIEW
+                  $ref: "#/components/schemas/TaskStatus"
+                documentIds:
+                  type: "array"
+                  items:
+                    type: "string"
+            AddTask:
+              required:
+              - "description"
+              type: "object"
+              properties:
+                description:
+                  type: "string"
+                  description: "Description of Task"
+                status:
+                  $ref: "#/components/schemas/TaskStatus"
+                documentIds:
+                  type: "array"
+                  items:
+                    type: "string"
+            UpdateNigoResponse:
+              type: "object"
+              properties:
+                nigoId:
+                  type: "string"
+                  description: "Nigo Identifier" 
+            UpdateNigoRequest:
+              type: "object"
+              properties:
+                nigo:
+                  $ref: "#/components/schemas/UpdateNigo"
+            UpdateNigo:
+              type: "object"
+              properties:
+                description:
+                  type: "string"
+                  description: "Description of Nigo"
+                status:
+                  $ref: "#/components/schemas/NigoStatus"
                 documentIds:
                   type: "array"
                   items:
@@ -5766,18 +5889,7 @@ Resources:
                   type: "string"
                   description: "Description of Task"
                 status:
-                  type: string
-                  description: Status of the Document Action
-                  enum:
-                    - NEW
-                    - ASSIGNED
-                    - IN_PROGRESS
-                    - ON_HOLD
-                    - ESCALATED
-                    - RESOLVED
-                    - CLOSED
-                    - REOPENED
-                    - UNDER_REVIEW
+                  $ref: "#/components/schemas/NigoStatus"
                 documentIds:
                   type: "array"
                   items:
@@ -5795,22 +5907,7 @@ Resources:
                   type: "string"
                   description: "Description of Task"
                 status:
-                  type: string
-                  description: Status of the Document Action
-                  enum:
-                    - NEW
-                    - ASSIGNED
-                    - IN_PROGRESS
-                    - ON_HOLD
-                    - ESCALATED
-                    - RESOLVED
-                    - CLOSED
-                    - REOPENED
-                    - UNDER_REVIEW
-                documentIds:
-                  type: "array"
-                  items:
-                    type: "string"
+                  $ref: "#/components/schemas/TaskStatus"
             Nigo:
               type: "object"
               properties:
@@ -5824,22 +5921,7 @@ Resources:
                   type: "string"
                   description: "Description of Task"
                 status:
-                  type: string
-                  description: Status of the Document Action
-                  enum:
-                    - NEW
-                    - ASSIGNED
-                    - IN_PROGRESS
-                    - ON_HOLD
-                    - ESCALATED
-                    - RESOLVED
-                    - CLOSED
-                    - REOPENED
-                    - UNDER_REVIEW
-                documentIds:
-                  type: "array"
-                  items:
-                    type: "string"
+                  $ref: "#/components/schemas/NigoStatus"
             GetCasesResponse:
               type: "object"
               properties:
@@ -5902,18 +5984,8 @@ Resources:
                   type: "string"
                   description: "Case Name"
                 status:
-                  type: string
-                  description: Status of the Document Action
-                  enum:
-                    - NEW
-                    - ASSIGNED
-                    - IN_PROGRESS
-                    - ON_HOLD
-                    - ESCALATED
-                    - RESOLVED
-                    - CLOSED
-                    - UNDER_REVIEW
-                    - AWAITING_CLIENT_RESPONSE
+                  $ref: "#/components/schemas/CaseStatus"
+                  description: Status of the Case
             GetDocumentsResponse:
               type: "object"
               properties:
