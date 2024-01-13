@@ -3679,6 +3679,8 @@
               operationId: AddCase
               summary: Add New Case
               description: Adds new case; ONLY available with FormKiQ Enterprise
+              parameters:
+              - $ref: '#/components/parameters/siteIdParam'
               tags:
               - Case Management
               requestBody:
@@ -3770,11 +3772,87 @@
               operationId: GetCaseDocuments
               tags:
               - Case Management
-              description: Returns a Case; ONLY available with FormKiQ Enterprise
+              description: Returns documents in a Case; ONLY available with FormKiQ Enterprise
               summary: Get list of document in a case
               parameters:
               - $ref: '#/components/parameters/siteIdParam'
               - $ref: '#/components/parameters/caseIdParam'
+              - name: next
+                in: query
+                description: Next page of results token
+                schema:
+                  type: string
+              - $ref: '#/components/parameters/limitParam'
+              responses:
+                "200":
+                  description: 200 OK
+                  headers:
+                    Access-Control-Allow-Origin:
+                      schema:
+                        type: string
+                    Access-Control-Allow-Methods:
+                      schema:
+                        type: string
+                    Access-Control-Allow-Headers:
+                      schema:
+                        type: string
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/GetCaseDocumentsResponse'
+              security:
+              - ApiAuthorization: []
+              x-amazon-apigateway-integration:
+                $ref: '#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200'
+          /cases/{caseId}/tasks/{taskId}/documents:
+            get:
+              operationId: GetTaskDocuments
+              tags:
+              - Case Management
+              description: Returns a list documents in a Case; ONLY available with FormKiQ Enterprise
+              summary: Get list of document in a task
+              parameters:
+              - $ref: '#/components/parameters/siteIdParam'
+              - $ref: '#/components/parameters/caseIdParam'
+              - $ref: '#/components/parameters/taskIdParam'
+              - name: next
+                in: query
+                description: Next page of results token
+                schema:
+                  type: string
+              - $ref: '#/components/parameters/limitParam'
+              responses:
+                "200":
+                  description: 200 OK
+                  headers:
+                    Access-Control-Allow-Origin:
+                      schema:
+                        type: string
+                    Access-Control-Allow-Methods:
+                      schema:
+                        type: string
+                    Access-Control-Allow-Headers:
+                      schema:
+                        type: string
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/GetCaseDocumentsResponse'
+              security:
+              - ApiAuthorization: []
+              x-amazon-apigateway-integration:
+                $ref: '#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200'
+          /cases/{caseId}/nigos/{nigoId}/documents:
+            get:
+              operationId: GetNigoDocuments
+              tags:
+              - Case Management
+              description: Returns a list documents in a Case; ONLY available with FormKiQ Enterprise
+              summary: Get list of document in a task
+              parameters:
+              - $ref: '#/components/parameters/siteIdParam'
+              - $ref: '#/components/parameters/caseIdParam'
+              - $ref: '#/components/parameters/nigoIdParam'
               - name: next
                 in: query
                 description: Next page of results token
@@ -3958,6 +4036,20 @@
               name: caseId
               in: path
               description: Case Identifier
+              required: true
+              schema:
+                type: string
+            taskIdParam:
+              name: taskId
+              in: path
+              description: Task Identifier
+              required: true
+              schema:
+                type: string
+            nigoIdParam:
+              name: nigoId
+              in: path
+              description: Nigo Identifier
               required: true
               schema:
                 type: string
@@ -5678,6 +5770,9 @@
             Task:
               type: object
               properties:
+                taskId:
+                  type: string
+                  description: Task Identifier
                 insertedDate:
                   type: string
                   description: Inserted Timestamp
@@ -5704,6 +5799,9 @@
             Nigo:
               type: object
               properties:
+                nigoId:
+                  type: string
+                  description: Nigo Identifier
                 insertedDate:
                   type: string
                   description: Inserted Timestamp
@@ -5744,9 +5842,9 @@
                 next:
                   type: string
                   description: Next page of results token
-                tasks:
+                nigos:
                   type: array
-                  description: List of tasks
+                  description: List of Nigos
                   items:
                     $ref: '#/components/schemas/Nigo'
             GetCaseTasksResponse:
@@ -5766,7 +5864,7 @@
                 next:
                   type: string
                   description: Next page of results token
-                cases:
+                documents:
                   type: array
                   description: List of documents
                   items:
@@ -5779,6 +5877,9 @@
             Case:
               type: object
               properties:
+                caseId:
+                  type: string
+                  description: Case Identifier
                 insertedDate:
                   type: string
                   description: Inserted Timestamp
