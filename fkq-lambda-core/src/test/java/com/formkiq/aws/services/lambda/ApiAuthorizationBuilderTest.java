@@ -461,4 +461,25 @@ class ApiAuthorizationBuilderTest {
     assertEquals("authentication_only,finance",
         api0.getRoles().stream().collect(Collectors.joining(",")));
   }
+
+  /**
+   * Basic 'Admins' only access.
+   */
+  @Test
+  void testApiAuthorizer14() throws Exception {
+    // given
+    String s0 = "[Admins]";
+    ApiGatewayRequestEvent event0 = getJwtEvent(s0);
+
+    // when
+    ApiAuthorization api0 = new ApiAuthorizationBuilder().build(event0);
+
+    // then
+    assertEquals("default", api0.getSiteId());
+    assertEquals("default", String.join(",", api0.getSiteIds()));
+    assertEquals("READ,WRITE,DELETE,ADMIN",
+        api0.getPermissions().stream().map(p -> p.name()).collect(Collectors.joining(",")));
+    assertEquals("groups: default (ADMIN,DELETE,READ,WRITE)", api0.getAccessSummary());
+    assertEquals("Admins", api0.getRoles().stream().collect(Collectors.joining(",")));
+  }
 }

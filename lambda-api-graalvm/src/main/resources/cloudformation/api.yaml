@@ -3718,6 +3718,8 @@ Resources:
                     application/json:
                       schema:
                         $ref: '#/components/schemas/AddCaseResponse'
+              security:
+              - ApiAuthorization: []
               x-amazon-apigateway-integration:
                 $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
           /cases/{caseId}:
@@ -3780,6 +3782,8 @@ Resources:
                     application/json:
                       schema:
                         $ref: '#/components/schemas/UpdateCaseResponse'
+              security:
+              - ApiAuthorization: []
               x-amazon-apigateway-integration:
                 $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
           /cases/{caseId}/documents:
@@ -3850,6 +3854,8 @@ Resources:
                     application/json:
                       schema:
                         $ref: '#/components/schemas/UpdateTaskResponse'
+              security:
+              - ApiAuthorization: []
               x-amazon-apigateway-integration:
                 $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
           /cases/{caseId}/tasks/{taskId}/documents:
@@ -3921,6 +3927,8 @@ Resources:
                     application/json:
                       schema:
                         $ref: '#/components/schemas/UpdateNigoResponse'
+              security:
+              - ApiAuthorization: []
               x-amazon-apigateway-integration:
                 $ref: "#/components/x-amazon-apigateway-integrations/caseManagementLambdaApi200"
           /cases/{caseId}/nigos/{nigoId}/documents:
