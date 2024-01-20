@@ -5739,6 +5739,16 @@
                 status:
                   $ref: '#/components/schemas/CaseStatus'
                   description: Status of the Case
+                documentNumberFormat:
+                  type: array
+                  description: Format of Document Number
+                  items:
+                    $ref: '#/components/schemas/StringFormat'
+                caseNumberFormat:
+                  type: array
+                  description: Format of Case Number
+                  items:
+                    $ref: '#/components/schemas/StringFormat'
                 documentIds:
                   type: array
                   items:
@@ -5751,6 +5761,17 @@
                   type: array
                   items:
                     $ref: '#/components/schemas/AddNigo'
+            StringFormat:
+              type: object
+              properties:
+                type:
+                  $ref: '#/components/schemas/StringGeneratorType'
+                staticValue:
+                  type: string
+                  description: Static Value
+                padding:
+                  type: integer
+                  description: Optional padding for AUTO_INCREMENT number
             UpdateCaseResponse:
               type: object
               properties:
@@ -5774,6 +5795,13 @@
                   type: array
                   items:
                     type: string
+            StringGeneratorType:
+              type: string
+              description: Generate Strings of Type
+              enum:
+              - AUTO_INCREMENT
+              - STATIC
+              - DATE_YYYYMMDD
             CaseStatus:
               type: string
               description: Status of the Case
@@ -5970,6 +5998,12 @@
                 caseId:
                   type: string
                   description: Case Identifier
+                caseNumber:
+                  type: string
+                  description: Case Number
+                documentNumber:
+                  type: string
+                  description: Document Number
                 insertedDate:
                   type: string
                   description: Inserted Timestamp

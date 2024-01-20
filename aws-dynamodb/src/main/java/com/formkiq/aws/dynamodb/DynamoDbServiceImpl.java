@@ -174,6 +174,21 @@ public class DynamoDbServiceImpl implements DynamoDbService {
   }
 
   @Override
+  public String getNextNumber(final Map<String, AttributeValue> keys) {
+
+    UpdateItemRequest updateItemRequest = UpdateItemRequest.builder().tableName(this.tableName)
+        .key(keys).updateExpression("ADD #autoIncrement :val")
+        .expressionAttributeNames(Map.of("#autoIncrement", "Number"))
+        .expressionAttributeValues(Map.of(":val", AttributeValue.builder().n("1").build()))
+        .returnValues(ReturnValue.UPDATED_NEW).build();
+
+    UpdateItemResponse response = updateItem(updateItemRequest);
+
+    AttributeValue val = response.attributes().get("Number");
+    return val.n();
+  }
+
+  @Override
   public String getTableName() {
     return this.tableName;
   }
