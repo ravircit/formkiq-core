@@ -5764,6 +5764,10 @@ Resources:
                   description: "Format of Case Number"
                   items:
                     $ref: "#/components/schemas/StringFormat"
+                metadata:
+                  type: "object"
+                  additionalProperties:
+                    type: object
                 documentIds:
                   type: "array"
                   items:
@@ -5877,6 +5881,10 @@ Resources:
                   description: "Description of Task"
                 status:
                   $ref: "#/components/schemas/TaskStatus"
+                metadata:
+                  type: "object"
+                  additionalProperties:
+                    type: object
                 documentIds:
                   type: "array"
                   items:
@@ -5891,6 +5899,10 @@ Resources:
                   description: "Description of Task"
                 status:
                   $ref: "#/components/schemas/TaskStatus"
+                metadata:
+                  type: "object"
+                  additionalProperties:
+                    type: object
                 documentIds:
                   type: "array"
                   items:
@@ -5914,6 +5926,10 @@ Resources:
                   description: "Description of Nigo"
                 status:
                   $ref: "#/components/schemas/NigoStatus"
+                metadata:
+                  type: "object"
+                  additionalProperties:
+                    type: object
                 documentIds:
                   type: "array"
                   items:
@@ -5928,6 +5944,10 @@ Resources:
                   description: "Description of Task"
                 status:
                   $ref: "#/components/schemas/NigoStatus"
+                metadata:
+                  type: "object"
+                  additionalProperties:
+                    type: object
                 documentIds:
                   type: "array"
                   items:
@@ -5946,6 +5966,10 @@ Resources:
                   description: "Description of Task"
                 status:
                   $ref: "#/components/schemas/TaskStatus"
+                metadata:
+                  type: "object"
+                  additionalProperties:
+                    type: object
             Nigo:
               type: "object"
               properties:
@@ -5960,6 +5984,10 @@ Resources:
                   description: "Description of Task"
                 status:
                   $ref: "#/components/schemas/NigoStatus"
+                metadata:
+                  type: "object"
+                  additionalProperties:
+                    type: object
             GetCasesResponse:
               type: "object"
               properties:
@@ -6027,6 +6055,10 @@ Resources:
                 name:
                   type: "string"
                   description: "Case Name"
+                metadata:
+                  type: "object"
+                  additionalProperties:
+                    type: object
                 status:
                   $ref: "#/components/schemas/CaseStatus"
                   description: Status of the Case
