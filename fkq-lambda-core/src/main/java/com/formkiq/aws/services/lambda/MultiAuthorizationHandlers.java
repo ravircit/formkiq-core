@@ -1,6 +1,6 @@
 /**
  * MIT License
- * 
+ *
  * Copyright (c) 2018 - 2020 FormKiQ
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -12,7 +12,7 @@
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 import com.formkiq.module.lambdaservices.AwsServiceCache;
 
 /**
- * 
+ *
  * Implementation that supports multiple {@link AuthorizationHandler}. If any
  * {@link AuthorizationHandler} is not authorized, they will all fail.
  *
@@ -40,19 +40,22 @@ public class MultiAuthorizationHandlers implements AuthorizationHandler {
   /** {@link List} {@link AuthorizationHandler}. */
   private List<AuthorizationHandler> handlers;
 
+  private AuthzAuthorizationHandlers authorizationHandlers;
+
   /**
    * constructor.
-   * 
+   *
    * @param authorizationHandlers {@link List} {@link AuthorizationHandler}
    */
   public MultiAuthorizationHandlers(final List<AuthorizationHandler> authorizationHandlers) {
     this.handlers = authorizationHandlers;
+    this.authorizationHandlers = new AuthzAuthorizationHandlers(authorizationHandlers);
   }
 
   @Override
   public Optional<Boolean> isAuthorized(final AwsServiceCache awsServices,
-      final ApiGatewayRequestEvent event, final ApiAuthorization authorization) {
-
+                                        final ApiGatewayRequestEvent event, final ApiAuthorization authorization) {
+    authorizationHandlers.isAuthorized(awsServices, event, authorization);
     List<Optional<Boolean>> results = new ArrayList<>();
 
     for (AuthorizationHandler handler : this.handlers) {
@@ -62,13 +65,13 @@ public class MultiAuthorizationHandlers implements AuthorizationHandler {
 
     Optional<Boolean> o = Optional.empty();
     List<Optional<Boolean>> list = results.stream()
-        .filter(r -> r.isPresent() && !r.get().booleanValue()).collect(Collectors.toList());
+            .filter(r -> r.isPresent() && !r.get().booleanValue()).collect(Collectors.toList());
 
     if (!list.isEmpty()) {
       o = Optional.of(Boolean.FALSE);
     } else {
       list = results.stream().filter(r -> r.isPresent() && r.get().booleanValue())
-          .collect(Collectors.toList());
+              .collect(Collectors.toList());
       o = !list.isEmpty() ? Optional.of(Boolean.TRUE) : Optional.empty();
     }
 
