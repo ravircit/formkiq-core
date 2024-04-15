@@ -1,5 +1,3 @@
-package com.formkiq.aws.services.lambda;
-
 /**
  * MIT License
  *
@@ -23,32 +21,34 @@ package com.formkiq.aws.services.lambda;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.formkiq.aws.services.lambda;
 
 import com.formkiq.module.lambdaservices.AwsServiceCache;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  *
- * Implementation that supports multiple {@link AuthorizationHandler}. If any
- * {@link AuthorizationHandler} is not authorized, they will all fail.
+ * Implementation that supports multiple {@link AuthzAuthorizationHandlers}. If any
+ * {@link AuthzAuthorizationHandlers} is not authorized, they will all fail.
  *
  */
 public class AuthzAuthorizationHandlers implements AuthorizationHandler {
 
+
     /** {@link List} {@link AuthorizationHandler}. */
     private List<AuthorizationHandler> handlers;
+
+    /** log. */
     static Logger logger = Logger.getLogger(AuthzAuthorizationHandlers.class.getName());
 
     /**
      * constructor.
      *
-     * @param authorizationHandlers {@link List} {@link AuthorizationHandler}
+     * @param authorizationHandlers {@link List} {@link AuthzAuthorizationHandlers}
      */
     public AuthzAuthorizationHandlers(final List<AuthorizationHandler> authorizationHandlers) {
         this.handlers = authorizationHandlers;

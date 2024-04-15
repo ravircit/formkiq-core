@@ -39,8 +39,8 @@ public class MultiAuthorizationHandlers implements AuthorizationHandler {
 
   /** {@link List} {@link AuthorizationHandler}. */
   private List<AuthorizationHandler> handlers;
-
-  private AuthzAuthorizationHandlers authorizationHandlers;
+  /** {@link List} {@link AuthorizationHandler}. */
+  private AuthzAuthorizationHandlers authorizationHandlers1;
 
   /**
    * constructor.
@@ -49,13 +49,13 @@ public class MultiAuthorizationHandlers implements AuthorizationHandler {
    */
   public MultiAuthorizationHandlers(final List<AuthorizationHandler> authorizationHandlers) {
     this.handlers = authorizationHandlers;
-    this.authorizationHandlers = new AuthzAuthorizationHandlers(authorizationHandlers);
+    this.authorizationHandlers1 = new AuthzAuthorizationHandlers(authorizationHandlers);
   }
 
   @Override
   public Optional<Boolean> isAuthorized(final AwsServiceCache awsServices,
                                         final ApiGatewayRequestEvent event, final ApiAuthorization authorization) {
-    authorizationHandlers.isAuthorized(awsServices, event, authorization);
+    authorizationHandlers1.isAuthorized(awsServices, event, authorization);
     List<Optional<Boolean>> results = new ArrayList<>();
 
     for (AuthorizationHandler handler : this.handlers) {
