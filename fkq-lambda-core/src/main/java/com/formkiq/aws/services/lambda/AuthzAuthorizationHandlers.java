@@ -39,26 +39,26 @@ import java.util.logging.Logger;
 public class AuthzAuthorizationHandlers implements AuthorizationHandler {
 
 
-    /** {@link List} {@link AuthorizationHandler}. */
-    private List<AuthorizationHandler> handlers;
+  /** {@link List} {@link AuthorizationHandler}. */
+  private List<AuthorizationHandler> handlers;
 
-    /** log. */
-    static Logger logger = Logger.getLogger(AuthzAuthorizationHandlers.class.getName());
+  /** log. */
+  static Logger logger = Logger.getLogger(AuthzAuthorizationHandlers.class.getName());
 
-    /**
-     * constructor.
-     *
-     * @param authorizationHandlers {@link List} {@link AuthzAuthorizationHandlers}
-     */
-    public AuthzAuthorizationHandlers(final List<AuthorizationHandler> authorizationHandlers) {
-        this.handlers = authorizationHandlers;
-    }
+  /**
+   * constructor.
+   *
+   * @param authorizationHandlers {@link List} {@link AuthzAuthorizationHandlers}
+   */
+  public AuthzAuthorizationHandlers(final List<AuthorizationHandler> authorizationHandlers) {
+    this.handlers = authorizationHandlers;
+  }
 
-    @Override
-    public Optional<Boolean> isAuthorized(final AwsServiceCache awsServices,
-                                          final ApiGatewayRequestEvent event, final ApiAuthorization authorization) {
-        logger.log(Level.INFO, event.getBody());
+  @Override
+  public Optional<Boolean> isAuthorized(final AwsServiceCache awsServices,
+      final ApiGatewayRequestEvent event, final ApiAuthorization authorization) {
+    logger.log(Level.INFO, event.getBody());
 
-        return null;
-    }
+    return Optional.empty();
+  }
 }
