@@ -57,7 +57,7 @@ public class AuthzAuthorizationHandlers implements AuthorizationHandler {
   @Override
   public Optional<Boolean> isAuthorized(final AwsServiceCache awsServices,
       final ApiGatewayRequestEvent event, final ApiAuthorization authorization) {
-    logger.log(Level.INFO, event.getBody());
+    logger.log(Level.INFO, "AuthzAuthorizationHandlers", event.getBody());
 
     return Optional.empty();
   }
