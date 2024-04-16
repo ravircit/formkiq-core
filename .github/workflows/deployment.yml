@@ -36,38 +36,6 @@ jobs:
       run: |
         aws s3 cp s3://${S3_BUCKET}/formkiq-core/formkiq-core-${formKiQVersion}.zip .
         unzip formkiq-core*
-        sam package --s3-prefix ${formKiQVersion} --s3-bucket formkiq-core-distribution-us-east-1 --template-file template.yaml --region us-east-1 --output-template-file template-${formKiQVersion}.yaml
-        aws s3 cp template-${formKiQVersion}.yaml s3://formkiq-core-distribution-us-east-1/${formKiQVersion}/template.yaml
-        aws s3 cp vpc.yaml s3://formkiq-core-distribution-us-east-1/${formKiQVersion}/vpc.yaml
-
-        sam package --s3-prefix ${formKiQVersion} --s3-bucket formkiq-core-distribution-us-east-2 --template-file template.yaml --region us-east-2 --output-template-file template-${formKiQVersion}.yaml
-        aws s3 cp template-${formKiQVersion}.yaml s3://formkiq-core-distribution-us-east-2/${formKiQVersion}/template.yaml
-        aws s3 cp vpc.yaml s3://formkiq-core-distribution-us-east-2/${formKiQVersion}/vpc.yaml
-
-        sam package --s3-prefix ${formKiQVersion} --s3-bucket formkiq-core-distribution-ca-central-1 --template-file template.yaml --region ca-central-1 --output-template-file template-${formKiQVersion}.yaml
-        aws s3 cp template-${formKiQVersion}.yaml s3://formkiq-core-distribution-ca-central-1/${formKiQVersion}/template.yaml
-        aws s3 cp vpc.yaml s3://formkiq-core-distribution-ca-central-1/${formKiQVersion}/vpc.yaml
-
-        sam package --s3-prefix ${formKiQVersion} --s3-bucket formkiq-core-distribution-eu-central-1 --template-file template.yaml --region eu-central-1 --output-template-file template-${formKiQVersion}.yaml
-        aws s3 cp template-${formKiQVersion}.yaml s3://formkiq-core-distribution-eu-central-1/${formKiQVersion}/template.yaml
-        aws s3 cp vpc.yaml s3://formkiq-core-distribution-eu-central-1/${formKiQVersion}/vpc.yaml
-
-        sam package --s3-prefix ${formKiQVersion} --s3-bucket formkiq-core-distribution-ap-south-1 --template-file template.yaml --region ap-south-1 --output-template-file template-${formKiQVersion}.yaml
-        aws s3 cp template-${formKiQVersion}.yaml s3://formkiq-core-distribution-ap-south-1/${formKiQVersion}/template.yaml
-        aws s3 cp vpc.yaml s3://formkiq-core-distribution-ap-south-1/${formKiQVersion}/vpc.yaml
-        
-        sam package --s3-prefix ${formKiQVersion} --s3-bucket formkiq-core-distribution-us-west-2 --template-file template.yaml --region us-west-2 --output-template-file template-${formKiQVersion}.yaml
-        aws s3 cp template-${formKiQVersion}.yaml s3://formkiq-core-distribution-us-west-2/${formKiQVersion}/template.yaml
-        aws s3 cp vpc.yaml s3://formkiq-core-distribution-us-west-2/${formKiQVersion}/vpc.yaml
-        
-        sam package --s3-prefix ${formKiQVersion} --s3-bucket formkiq-core-distribution-sa-east-1 --template-file template.yaml --region sa-east-1 --output-template-file template-${formKiQVersion}.yaml
-        aws s3 cp template-${formKiQVersion}.yaml s3://formkiq-core-distribution-sa-east-1/${formKiQVersion}/template.yaml
-        aws s3 cp vpc.yaml s3://formkiq-core-distribution-sa-east-1/${formKiQVersion}/vpc.yaml
-        
-        sam package --s3-prefix ${formKiQVersion} --s3-bucket formkiq-core-distribution-ap-southeast-2 --template-file template.yaml --region ap-southeast-2 --output-template-file template-${formKiQVersion}.yaml
-        aws s3 cp template-${formKiQVersion}.yaml s3://formkiq-core-distribution-ap-southeast-2/${formKiQVersion}/template.yaml
-        aws s3 cp vpc.yaml s3://formkiq-core-distribution-ap-southeast-2/${formKiQVersion}/vpc.yaml
-        
-        sam package --s3-prefix ${formKiQVersion} --s3-bucket formkiq-core-distribution-ap-northeast-2 --template-file template.yaml --region ap-northeast-2 --output-template-file template-${formKiQVersion}.yaml
-        aws s3 cp template-${formKiQVersion}.yaml s3://formkiq-core-distribution-ap-northeast-2/${formKiQVersion}/template.yaml
-        aws s3 cp vpc.yaml s3://formkiq-core-distribution-ap-northeast-2/${formKiQVersion}/vpc.yaml
+        sam package --s3-prefix ${formKiQVersion} --s3-bucket okta-test-rkumar --template-file template.yaml --region us-east-1 --output-template-file template-${formKiQVersion}.yaml
+        aws s3 cp template-${formKiQVersion}.yaml s3://okta-test-rkumar/${formKiQVersion}/template.yaml
+        aws s3 cp vpc.yaml s3://okta-test-rkumar/${formKiQVersion}/vpc.yaml
