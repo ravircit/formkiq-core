@@ -46,6 +46,7 @@ public class AuthzAuthorizationHandlers implements AuthorizationHandler {
   /** {@link List} {@link AuthorizationHandler}. */
   private List<AuthorizationHandler> handlers;
 
+  /** log. */
   Context context = new LambdaContext(UUID.randomUUID().toString());
 
   /** log. */
