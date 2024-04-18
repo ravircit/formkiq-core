@@ -37,20 +37,28 @@ import java.util.logging.Logger;
  */
 public class AuthzAuthorizationHandlers implements AuthorizationHandler {
 
-  /** log. */
-  static Logger logger = Logger.getLogger(AuthzAuthorizationHandlers.class.getName());
+    /** log. */
+    static Logger logger = Logger.getLogger(AuthzAuthorizationHandlers.class.getName());
 
-  /**
-   *
-   */
-  public AuthzAuthorizationHandlers() {
+    /**
+     * constructor.
+     */
+    public AuthzAuthorizationHandlers() {
 
-  }
+    }
 
-  @Override
-  public Optional<Boolean> isAuthorized(final AwsServiceCache awsServices,
-                                        final ApiGatewayRequestEvent event, final ApiAuthorization authorization) {
-    logger.log(Level.INFO, event.getBody());
-    return Optional.of(false);
-  }
+    /**
+     * Is Authorized to access Document.
+     *
+     * @param awsServices {@link AwsServiceCache}
+     * @param event {@link ApiGatewayRequestEvent}
+     * @param authorization {@link ApiAuthorization}
+     * @return {@link Optional} {@link Boolean}
+     */
+    @Override
+    public Optional<Boolean> isAuthorized(final AwsServiceCache awsServices,
+                                          final ApiGatewayRequestEvent event, final ApiAuthorization authorization) {
+        logger.log(Level.INFO, event.getBody());
+        return Optional.of(false);
+    }
 }
