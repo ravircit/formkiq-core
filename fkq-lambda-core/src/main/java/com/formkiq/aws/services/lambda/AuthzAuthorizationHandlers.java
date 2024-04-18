@@ -23,14 +23,14 @@
  */
 package com.formkiq.aws.services.lambda;
 
-//import com.amazonaws.services.lambda.runtime.Context;
-//import com.amazonaws.services.lambda.runtime.LambdaLogger;
-//import com.formkiq.lambda.runtime.graalvm.LambdaContext;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.formkiq.lambda.runtime.graalvm.LambdaContext;
 import com.formkiq.module.lambdaservices.AwsServiceCache;
 
 import java.util.List;
 import java.util.Optional;
-//import java.util.UUID;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,29 +46,25 @@ public class AuthzAuthorizationHandlers implements AuthorizationHandler {
   /** {@link List} {@link AuthorizationHandler}. */
   private List<AuthorizationHandler> handlers;
 
-//  /** log. */
-//  Context context = new LambdaContext(UUID.randomUUID().toString());
+  /** log. */
+  Context context = new LambdaContext(UUID.randomUUID().toString());
 
   /** log. */
   static Logger logger = Logger.getLogger(AuthzAuthorizationHandlers.class.getName());
 
   /**
-   * constructor.
    *
-   * @param authorizationHandlers {@link List} {@link AuthzAuthorizationHandlers}
    */
-  public AuthzAuthorizationHandlers(final List<AuthorizationHandler> authorizationHandlers) {
-    this.handlers = authorizationHandlers;
+  public AuthzAuthorizationHandlers() {
+
   }
 
   @Override
   public Optional<Boolean> isAuthorized(final AwsServiceCache awsServices,
                                         final ApiGatewayRequestEvent event, final ApiAuthorization authorization) {
     logger.log(Level.INFO, event.getBody());
-//    LambdaLogger logger1 = context.getLogger();
-//    logger1.log("cloudwatch AuthzAuthorizationHandlers formkiqtest: " + event.getBody());
-
-
-    return null;
+    LambdaLogger logger1 = context.getLogger();
+    logger1.log("cloudwatch AuthzAuthorizationHandlers formkiqtest: " + event.getBody());
+    return Optional.of(false);
   }
 }
